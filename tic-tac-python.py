@@ -1,5 +1,21 @@
 # An empty Tic-tac-toe board
-board = [['-', '-', '-'] for index in range(0, 3)]
+class Board:
+  def __init__(self):
+    self.game_state = [['-', '-', '-'] for index in range(0, 3)]
+
+  def __repr__(self):
+    display = ''
+
+    for row in self.game_state:
+
+      for column in row:
+        display += column + ' '
+
+      display += '\n'
+
+    return display
+
+game_board = Board()
 
 # Tracks if it is player 1's or player 2's turn
 player_1_turn = True
@@ -18,7 +34,7 @@ print(start_text)
 while player_1_marker != 'x' and player_1_marker != 'o':
   player_1_marker = input('Choose a marker (x or o): ')
 
-  if player_1_maker != 'x' and player_1_marker != 'o':
+  if player_1_marker != 'x' and player_1_marker != 'o':
     print('Please select x or o.')
 
 # Give player 2 the opposite marker of player 1
@@ -27,3 +43,6 @@ if player_1_marker == 'x':
 else:
   player_2_marker = 'x'
 
+
+# Display the intial game board
+print(game_board)
