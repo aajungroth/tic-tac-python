@@ -33,3 +33,33 @@ I wrote a get_binary_answer function to get the answer to an question with two
 options. This was useful for asking player one for there marker, either 'x' or
 'o' and other yes and no questions. The function loops until the user picks
 one of the two valid options.
+
+The game starts by displaying a greeting, a valid move list and  prompting the
+user to chose a marker, either 'x' or 'o'. I used the get_binary_answer
+function to clean up the code for this.
+
+Then the game enters a while loop. This loop will continue until players
+finish the current game and chose to not start a new game. Each iteration of
+the loop switches between player one and player two as the current player.
+
+The players are prompted for a space code that maps to one of the nine spaces.
+Each code has the row as a letter and the column as a number. The codes are
+'a1', 'a2', 'a3', 'b1', 'b2', 'b3', 'c1', 'c2', and 'c3'.
+
+The player's space code input is validated to make sure that it is valid. If
+it is then, the code is used to mark that space on the board with the player's
+maker.
+
+Then the check_winner board method is used to check if the move resulted in
+three in a row for that player. If there is no winner and it the board is not
+full then the loop continues until either a player wins or the game ends in a
+draw.
+
+Once a player has won or cat's game has been reached the result is displayed
+to the user. They are prompted to play another game. If they chose to play
+another game then they are also asked if they want to switch markers. I used
+the get_binary_answer function to avoid having to create the same while loops
+and error handling code to make sure a 'y' or 'n' was inputted.
+
+Once the player's decided to finish playing the game exits the while loop and
+prints a 'thanks for playing' message.
