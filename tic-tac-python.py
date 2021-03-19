@@ -38,6 +38,72 @@ class Board:
 
     return display
 
+  def check_cats_game(self):
+    marker_counter = 0
+
+    for row in self.game_state:
+      for column in row:
+        if column != '-':
+          marker_counter += 1
+
+    if marker_counter == 9:
+      return True
+    else:
+      return False
+
+  def check_winner(self, marker):
+    match_counter = 0
+
+    for row in self.game_state:
+      for column in row:
+        if column == marker:
+          match_counter += 1
+
+      if match_counter == 3:
+        return True
+      else:
+        match_counter = 0
+
+    for column_index in range(0, 3):
+      for row_index in range(0, 3):
+        if self.game_state[row_index][column_index] == marker:
+          match_counter += 1
+
+      if match_counter == 3:
+        return True
+      else:
+        match_counter = 0
+
+    row_index = 0
+    column_index =0
+
+    while row_index <= 2 and column_index <= 2:
+      if self.game_state[row_index][column_index] == marker:
+        match_counter += 1
+
+      row_index += 1
+      column_index += 1
+
+    if match_counter == 3:
+      return True
+    else:
+      match_counter = 0
+
+    row_index = 0
+    column_index = 2
+
+    while row_index <= 2 and column_index >= 0:
+      if self.game_state[row_index][column_index] == marker:
+        match_counter += 1
+
+      row_index += 1
+      column_index -= 1
+
+    if match_counter == 3:
+      return True
+    else:
+      return False
+
   def is_valid_space(self, space):
     result = None
 
@@ -74,6 +140,15 @@ player_input = ''
 # Is the player input valid
 is_input_valid = None
 
+# Is there a winner
+is_winner = False
+
+# Is there a cats game
+is_cats_game = False
+
+# If the users want to play again
+is_play_again = ''
+
 # Opening message
 start_text = 'Welcome to Tic-tac-python!\n'
 start_text += 'Valid space codes are: a1, a2, a3, b1, b2, b3, c1, c2, c3'
@@ -108,26 +183,49 @@ while is_game_running:
   # Get input
   player_input = input('Select a space code (letter + number): ')
 
+  # Test if the input is valid
   is_valid_input = game_board.is_valid_space(player_input)
 
   if is_valid_input:
+    # Set the marker on the board
     game_board.set_space(player_marker, player_input)
 
-    # check for winner
-    # if there is a winner (or cat's game)
-      # display the winner
-      # ask to play again
-      # if play again
+    # Check for a winner or cat's game
+    is_winner = game_board.check_winner(player_marker)
+
+    if is_winner and is_player_1_turn:
+      print('Player 1 wins!')
+    elif is_winner and not is_player_1_turn:
+      print('Player 2 wins!')
+    else:
+      is_cats_game = game_board.check_cats_game()
+
+      if is_cats_game:
+        print("Cat's game!")
+
+    # Ask to play again
+    if is_winner or is_cats_game:
+      # Display the board to show the end state
+      print(game_board)
+
+      while is_play_again != 'y' and is_play_again != 'n':
+        is_play_again = input('Play again? (y or n): ')
+
+        if is_play_again != 'y' and is_play_again != 'n':
+          print('Please select y or n.')
+
+      #if is_play_again == 'y':
         # reset the board
         # reset the player turn
         # ask to switch markers
         # if switch markers
           # switch the markers
-    # else
-    if is_player_1_turn:
-      is_player_1_turn = False
+    # Switch turns
     else:
-      is_player_1_turn = True
+      if is_player_1_turn:
+        is_player_1_turn = False
+      else:
+        is_player_1_turn = True
   elif is_valid_input == False:
     print("That space is already taken.")
   else:
