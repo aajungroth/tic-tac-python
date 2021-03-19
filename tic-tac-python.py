@@ -112,6 +112,15 @@ class Board:
 
     return result
 
+  def reset_board(self):
+    # Reset the board state
+    self.game_state = [['-', '-', '-'] for index in range(0, 3)]
+
+    # Reset the list of valid positions
+    for column_code in self.valid_code_list.keys():
+      self.valid_code_list[column_code] = True
+
+
   def set_space(self, marker, space):
     row = self.row_code[space[0]]
     column = int(space[1]) - 1
@@ -148,6 +157,9 @@ is_cats_game = False
 
 # If the users want to play again
 is_play_again = ''
+
+# If the users want to switch markers
+is_switch_marker = ''
 
 # Opening message
 start_text = 'Welcome to Tic-tac-python!\n'
@@ -214,12 +226,36 @@ while is_game_running:
         if is_play_again != 'y' and is_play_again != 'n':
           print('Please select y or n.')
 
-      #if is_play_again == 'y':
-        # reset the board
-        # reset the player turn
-        # ask to switch markers
-        # if switch markers
-          # switch the markers
+      # Play a new game
+      if is_play_again == 'y':
+        # Reset the game board
+        game_board.reset_board()
+
+        # Ask to switch markers
+        while is_switch_marker != 'y' and is_switch_marker != 'n':
+          is_switch_marker = input('Switch player markers? (y or n): ')
+
+          if is_switch_marker != 'y' and is_switch_marker != 'n':
+            print('Please select y or n.')
+
+        if is_switch_marker == 'y':
+          temp_marker = player_1_marker
+          player_1_marker = player_2_marker
+          player_2_marker = temp_marker
+
+        # Reset the data
+        is_player_1_turn = True
+        player_marker = ''
+        player_input = ''
+        is_input_valid = None
+        is_winner = False
+        is_cats_game = False
+        is_play_again = ''
+        is_switch_marker = ''
+
+      # End the game
+      elif is_play_again == 'n':
+        is_game_running = False
     # Switch turns
     else:
       if is_player_1_turn:
