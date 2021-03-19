@@ -127,6 +127,19 @@ class Board:
     self.game_state[row][column] = marker
     self.valid_code_list[space] = False
 
+# Gets player input for a binary choice
+def get_binary_answer(question, option_a = 'y', option_b = 'n'):
+  user_input = ''
+
+  # Loop until user picks option a or option b
+  while user_input != option_a and user_input != option_b:
+    user_input = input(question.format(option_a, option_b))
+
+    if user_input != option_a and user_input != option_b:
+      print('Please select {0} or {1}.'.format(option_a, option_b))
+
+  return user_input
+
 # An empty Tic-tac-toe board
 game_board = Board()
 
@@ -169,11 +182,7 @@ start_text += 'Valid space codes are: a1, a2, a3, b1, b2, b3, c1, c2, c3'
 print(start_text)
 
 # Loops until player 1 picks x or o
-while player_1_marker != 'x' and player_1_marker != 'o':
-  player_1_marker = input('Choose a marker (x or o): ')
-
-  if player_1_marker != 'x' and player_1_marker != 'o':
-    print('Please select x or o.')
+player_1_marker = get_binary_answer('Choose a marker ({0} or {1}): ', 'x', 'o')
 
 # Give player 2 the opposite marker of player 1
 if player_1_marker == 'x':
@@ -220,11 +229,7 @@ while is_game_running:
       # Display the board to show the end state
       print(game_board)
 
-      while is_play_again != 'y' and is_play_again != 'n':
-        is_play_again = input('Play again? (y or n): ')
-
-        if is_play_again != 'y' and is_play_again != 'n':
-          print('Please select y or n.')
+      is_play_again = get_binary_answer('Play again? ({0} or {1}): ')
 
       # Play a new game
       if is_play_again == 'y':
@@ -232,11 +237,8 @@ while is_game_running:
         game_board.reset_board()
 
         # Ask to switch markers
-        while is_switch_marker != 'y' and is_switch_marker != 'n':
-          is_switch_marker = input('Switch player markers? (y or n): ')
-
-          if is_switch_marker != 'y' and is_switch_marker != 'n':
-            print('Please select y or n.')
+        is_switch_marker = get_binary_answer(
+          'Switch player markers? ({0} or {1}): ')
 
         if is_switch_marker == 'y':
           temp_marker = player_1_marker
